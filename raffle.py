@@ -16,17 +16,16 @@ import datetime
 
 import aiohttp
 
-ADDRESS = "stars1xjzkaclgkglwhr8lc5yp3falz7ylh6806hpthw"
-TEAM_WALLET = "stars1ld36u4s9cw758dpn703n5r3slttlwl6e3h4c75"
-HU_WALLET = "stars14fj4wxrwgeclnjhsmd8muyzg674q7gymdf0kws"
-winners_file = "data/winners.json"
-
-
-KEMET_MINTER = "stars192hy2rfs0h33a6vs53pca32waulnxsg965lyrtj28dk6ecmcsd8qhvrh2w"
-# COSMONAUT_MINTER = "stars18tj7yvh7qxv29wtr4angy4gqycrrj9e5j9susaes7vd4tqafzthq5h2m8r"
-# STARTY_MINTER = "stars1fqsqgjlurc7z2sntulfa0f9alk2ke5npyxrze9deq7lujas7m3ss7vq2fe"
-# HONOR_STARTY_MINTER = "stars19dzracz083k9plv0gluvnu456frxcrxflaf37ugnj06tdr5xhu5sy3k988"
-HU_MINTER = "stars1lnrdwhf4xcx6w6tdpsghgv6uavem353gtgz77sdreyhts883wdjq52aewm"
+with open("config.json") as json_data_file:
+    json_data = json.load(json_data_file)
+    ADDRESS = json_data["community_wallet"]
+    TEAM_WALLET = json_data["team_wallet"]
+    HU_WALLET = json_data["hu_wallet"]
+    winners_file = json_data["winners_file"]
+    KEMET_MINTER = json_data["kemet_minter"]
+    HU_MINTER = json_data["hu_minter"]
+    n_winners = json_data["n_winners"]
+    prize = json_data["prize"]
 
 
 async def get_holders(
@@ -142,9 +141,6 @@ async def main():
     pool_value, pool_rewards = await get_pool_info(ADDRESS)
     stars_compound = pool_rewards
 
-    n_winners = 1
-    prize = "NFT"
-
     print(f"    Note : {stars_compound:.2f} $STARS toward NFT mint")
     print(f"    Today's 🎁 : {prize} for {n_winners} pharaoh\n")
 
@@ -165,26 +161,28 @@ async def main():
     #     honor_startys = await get_holders(HONOR_STARTY_MINTER, 1111)
     # honor_starty_counter = collections.Counter(honor_startys.values())
 
-    # with print_progress("Getting all HU planet holders"):
-    #     hu_planets = await get_holders(HU_MINTER, 5000)
-    # hu_counter = collections.Counter(hu_planets.values())
-    # print("Rangers total: " + str(len(hu_counter)))
+    with print_progress("Getting all HU planet holders"):
+        hu_planets = await get_holders(HU_MINTER, 5000)
+    hu_counter = collections.Counter(hu_planets.values())
+    print("Rangers total: " + str(len(hu_counter)))
 
-    # boosts = [
-    #     get_boost(
-    #         holder,
-    #         # cosmonaut_counter=cosmonaut_counter,
-    #         # starty_counter=starty_counter,
-    #         # honor_starty_counter=honor_starty_counter,
-    #         hu_counter=hu_counter,
-    #         kemet_counter=kemet_counter,
-    #     )
-    #     for holder in kemets.values()
-    # ]
+    boosts = [
+        get_boost(
+            holder,
+            # cosmonaut_counter=cosmonaut_counter,
+            # starty_counter=starty_counter,
+            # honor_starty_counter=honor_starty_counter,
+            hu_counter=hu_counter,
+            kemet_counter=kemet_counter,
+        )
+        for holder in kemets.values()
+    ]
 
     with print_progress(f"Picking {n_winners} winners"):
-        winner_ids = random.choices(list(kemets))
-        # winner_ids = random.choices(list(kemets), boosts) #boost for HU hodlers
+        # winner_ids = random.choices(list(kemets))
+        winner_ids = random.choices(list(kemets), boosts, k=n_winners) #boost for HU hodlers
+
+        winners = []
 
         with open(winners_file,'r+') as file:
             try:

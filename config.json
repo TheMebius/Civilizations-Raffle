@@ -1,0 +1,13 @@
+{
+        "community_wallet": "stars1xjzkaclgkglwhr8lc5yp3falz7ylh6806hpthw",
+        "team_wallet": "stars1ld36u4s9cw758dpn703n5r3slttlwl6e3h4c75",
+        "hu_wallet": "stars14fj4wxrwgeclnjhsmd8muyzg674q7gymdf0kws",
+        "winners_file": "data/winners.json",
+        "kemet_minter": "stars192hy2rfs0h33a6vs53pca32waulnxsg965lyrtj28dk6ecmcsd8qhvrh2w",
+        "hu_minter": "stars1lnrdwhf4xcx6w6tdpsghgv6uavem353gtgz77sdreyhts883wdjq52aewm",
+        "cosmonaut_minter": "stars18tj7yvh7qxv29wtr4angy4gqycrrj9e5j9susaes7vd4tqafzthq5h2m8r",
+        "starty_minter": "stars1fqsqgjlurc7z2sntulfa0f9alk2ke5npyxrze9deq7lujas7m3ss7vq2fe",
+        "honor_starty_minter": "stars19dzracz083k9plv0gluvnu456frxcrxflaf37ugnj06tdr5xhu5sy3k988",
+        "n_winners": 2,
+        "prize": "NFT"
+}
